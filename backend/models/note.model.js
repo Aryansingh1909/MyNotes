@@ -13,10 +13,10 @@ const noteSchema = new mongoose.Schema({
         type:[String],
         default:[]
     },
-    // files: {
-    //     type: String,
-    //     required: true,
-    // },
+    files: {
+        type: String,
+        required: true,
+    },
     isPinned:{
         type:Boolean,
         default:false

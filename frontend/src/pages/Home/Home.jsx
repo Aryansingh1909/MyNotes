@@ -5,14 +5,14 @@ import Modal from "react-modal"
 import AddEditNotes from "./AddEditNotes"
 import { useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
-import Navbar from "../../components/Navbar"
+import Navbar from "../../Components/Navbar"
 import axios from "axios"
 import { toast } from "react-toastify"
 import EmptyCard from "../../Components/EmptyCard/EmptyCard"
 
 const Home = () => {
   const { currentUser, loading, errorDispatch } = useSelector(
-    (state) => state.user
+    (state) => state?.user
   )
 
   const [userInfo, setUserInfo] = useState(null)
@@ -42,7 +42,7 @@ const Home = () => {
   // get all notes
   const getAllNotes = async () => {
     try {
-      const res = await axios.get("http://localhost:3000/api/note/all", {
+      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}`+ "/api/note/all", {
         withCredentials: true,
       })
 
@@ -69,7 +69,7 @@ const Home = () => {
 
     try {
       const res = await axios.delete(
-        "http://localhost:3000/api/note/delete/" + noteId,
+        `${import.meta.env.VITE_BACKEND_URL}`+"/api/note/delete/" + noteId,
         { withCredentials: true }
       )
 
@@ -87,7 +87,7 @@ const Home = () => {
 
   const onSearchNote = async (query) => {
     try {
-      const res = await axios.get("http://localhost:3000/api/note/search", {
+      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}`+"/api/note/search", {
         params: { query },
         withCredentials: true,
       })
@@ -115,7 +115,7 @@ const Home = () => {
 
     try {
       const res = await axios.put(
-        "http://localhost:3000/api/note/update-note-pinned/" + noteId,
+        `${import.meta.env.VITE_BACKEND_URL}`+"/api/note/update-note-pinned/" + noteId,
         { isPinned: !noteData.isPinned },
         { withCredentials: true }
       )
@@ -150,6 +150,7 @@ const Home = () => {
                 title={note.title}
                 date={note.createdAt}
                 content={note.content}
+                files={note.files}
                 tags={note.tags}
                 isPinned={note.isPinned}
                 onEdit={() => {
@@ -208,6 +209,7 @@ const Home = () => {
           noteData={openAddEditModal.data}
           type={openAddEditModal.type}
           getAllNotes={getAllNotes}
+          userInfo={currentUser?.user}
         />
       </Modal>
     </>

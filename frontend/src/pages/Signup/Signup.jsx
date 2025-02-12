@@ -13,52 +13,100 @@ const Signup = () => {
 
   const navigate = useNavigate()
 
+  // const handleSignUp = async (e) => {
+  //   e.preventDefault()
+
+  //   if (!name) {
+  //     setError("Please enter your name")
+  //     return
+  //   }
+
+  //   if (!validateEmail(email)) {
+  //     setError("Please enter a valid email address")
+  //     return
+  //   }
+
+  //   if (!password) {
+  //     setError("Please enter the password")
+  //     return
+  //   }
+
+  //   setError("")
+
+  //   // sign up api
+  //   try {
+  //     const res = await axios.post(
+  //       "http://localhost:3000/api/auth/signup",
+  //       { username: name, email, password },
+  //       { withCredentials: true }
+  //     )
+
+  //     if (res.data.success === false) {
+  //       setError(res.data.message)
+  //       toast.error(res.data.message)
+  //       return
+  //     }
+
+  //     toast.success(res.data.message)
+
+  //     setError("")
+
+  //     navigate("/login")
+  //   } catch (error) {
+  //     toast.error(error.message)
+  //     console.log(error.message)
+  //     setError(error.message)
+  //   }
+  // }
+
   const handleSignUp = async (e) => {
-    e.preventDefault()
-
+    e.preventDefault();
+  
     if (!name) {
-      setError("Please enter your name")
-      return
+      setError("Please enter your name");
+      return;
     }
-
+  
     if (!validateEmail(email)) {
-      setError("Please enter a valid email address")
-      return
+      setError("Please enter a valid email address");
+      return;
     }
-
+  
     if (!password) {
-      setError("Please enter the password")
-      return
+      setError("Please enter the password");
+      return;
     }
-
-    setError("")
-
-    // sign up api
+  
+    setError("");
+  
+    // Sign up API
     try {
       const res = await axios.post(
-        "http://localhost:3000/api/auth/signup",
+        `${import.meta.env.VITE_BACKEND_URL}`+"/api/auth/signup",
         { username: name, email, password },
         { withCredentials: true }
-      )
-
+      );
+  
       if (res.data.success === false) {
-        setError(res.data.message)
-        toast.error(res.data.message)
-        return
+        setError(res.data.message);
+        toast.error(res.data.message);
+        return;
       }
-
-      toast.success(res.data.message)
-
-      setError("")
-
-      navigate("/login")
+  
+      // Store token in localStorage
+      localStorage.setItem("userToken", res.data.token);
+  
+      toast.success(res.data.message);
+      setError("");
+  
+      navigate("/"); // Redirect to home page after successful signup
     } catch (error) {
-      toast.error(error.message)
-      console.log(error.message)
-      setError(error.message)
+      toast.error(error.response?.data?.message || "Something went wrong");
+      console.log(error.response?.data?.message || error.message);
+      setError(error.response?.data?.message || error.message);
     }
-  }
-
+  };
+  
   return (
     <>
       <div className="flex items-center justify-center mt-28">

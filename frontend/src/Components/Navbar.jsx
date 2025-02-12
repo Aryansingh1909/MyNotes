@@ -30,7 +30,7 @@ const Navbar = ({userInfo,handleClearSearch,onSearchNote}) => {
         try {
             dispatch(signoutStart())
             console.log("Logout done")
-            const res = await axios.get("http://localhost:3000/api/auth/signout", {
+            const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}`+"/api/auth/signout", {
                 withCredentials: true,
               })
               if (!res.data.success) {

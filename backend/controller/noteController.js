@@ -11,15 +11,16 @@ dotenv.config();
 // var upload = multer({ storage: storage });
 
 export const addNote = async (req,res,next) =>{
-    const {title,content,tags} = req.body
-    // const file = req.file.filename;
-    const {id} = req.user 
+    const {title,content,tags,id,fileUrl} = req.body
+    const file = fileUrl;
+    // console.log("ID is:",id); 
+    // const {id} = req.user 
 
-    if(!title){
+    if(!title){ 
         return next(errorHandler(400,"Title is required"))
     }
 
-    if(!content){
+    if(!content){ 
         return next(errorHandler(400,"Content is required"))
     }
 
@@ -28,8 +29,8 @@ export const addNote = async (req,res,next) =>{
             title,
             content,
             tags:tags|| [],
-            // files: file,
-            userId : req.user.id
+            files: file,
+            userId : id
         })
         await note.save()
 
@@ -85,21 +86,19 @@ export const editNote = async(req,res,next) => {
     }
 }
 
-export const getAllNotes = async (req,res,next) => {
-    const userId = req.user.id
-
-    try{
-        const notes = await Note.find({userId:userId}).sort({isPinned:-1})
+export const getAllNotes = async (req, res, next) => {
+    try {
+        const notes = await Note.find().sort({ isPinned: -1 });
         res.status(200).json({
-            success:true,
-            message:"All notes retrieved",
+            success: true,
+            message: "All notes retrieved",
             notes
-        })
+        });
+    } catch (error) {
+        next(error);
     }
-    catch(error){
-        next(error)
-    }
-}
+};
+
 
 export const deleteNote = async(req,res,next) => {
     const noteId = req.params.noteId
