@@ -204,11 +204,16 @@ export const signup = async (req, res, next) => {
 
     const { password: pass, ...rest } = newUser._doc;
 
+    // res.cookie("access_token", token, {
+    //   httpOnly: true,
+    //   secure: true,
+    //   sameSite: "None",
+    // })
     res.cookie("access_token", token, {
       httpOnly: true,
-      secure: true,
-      sameSite: "None",
-    })
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
+    });
       .status(201)
       .json({
         success: true,
@@ -252,9 +257,12 @@ export const signin = async (req, res, next) => {
     const { password: pass, ...rest } = validUser._doc;
 
     res.cookie("access_token", token, {
+      // httpOnly: true,
+      // secure: true,
+      // sameSite: "strict",
       httpOnly: true,
-      secure: true,
-      sameSite: "strict",
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
     })
       .status(200)
       .json({
