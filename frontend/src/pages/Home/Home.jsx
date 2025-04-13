@@ -29,12 +29,12 @@ console.log(" current :",currentUser)
     type: "add",
     data: null,
   })
-  console.log(" current :",currentUser.user)
+  console.log(" current :",currentUser?.user)
   useEffect(() => {
     if (currentUser === null || !currentUser) {
       navigate("/login")
     } else {
-      setUserInfo(currentUser.user)
+      setUserInfo(currentUser?.user)
       getAllNotes()
     }
   }, [])
