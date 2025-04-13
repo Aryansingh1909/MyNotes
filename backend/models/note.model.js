@@ -15,7 +15,7 @@ const noteSchema = new mongoose.Schema({
     },
     files: {
         type: String,
-        required: true,
+       
     },
     isPinned:{
         type:Boolean,

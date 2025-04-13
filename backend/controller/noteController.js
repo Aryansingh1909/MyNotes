@@ -13,8 +13,8 @@ dotenv.config();
 export const addNote = async (req,res,next) =>{
     const {title,content,tags,id,fileUrl} = req.body
     const file = fileUrl;
-    // console.log("ID is:",id); 
-    // const {id} = req.user 
+  
+    //const {id} = req.user 
 
     if(!title){ 
         return next(errorHandler(400,"Title is required"))
@@ -46,12 +46,14 @@ export const addNote = async (req,res,next) =>{
 
 export const editNote = async(req,res,next) => {
     const note = await Note.findById(req.params.noteId)
+    console.log("ID is:",note.userId.toString()); 
+    console.log("ID is:",req.user.id); 
 
     if(!note){
         return next(errorHandler(404,"Note not Found"))
     }
 
-    if(req.user.id !== note.userId){
+    if(req.user.id !== note.userId.toString()){
         return next(errorHandler(401,"You can update only your notes"))
     }
 
@@ -86,19 +88,35 @@ export const editNote = async(req,res,next) => {
     }
 }
 
-export const getAllNotes = async (req, res, next) => {
-    try {
-        const notes = await Note.find().sort({ isPinned: -1 });
-        res.status(200).json({
-            success: true,
-            message: "All notes retrieved",
-            notes
-        });
-    } catch (error) {
-        next(error);
-    }
-};
+// export const getAllNotes = async (req, res, next) => {
+//     try {
+//         const notes = await Note.find().sort({ isPinned: -1 });
+//         res.status(200).json({
+//             success: true,
+//             message: "All notes retrieved",
+//             notes
+//         });
+//     } catch (error) {
+//         next(error);
+//     }
+// };
 
+
+export const getAllNotes = async (req, res, next) => {
+    const userId = req.user.id
+  
+    try {
+      const notes = await Note.find({ userId: userId }).sort({ isPinned: -1 })
+  
+      res.status(200).json({
+        success: true,
+        message: "All notes retrived successfully",
+        notes,
+      })
+    } catch (error) {
+      next(error)
+    }
+  }
 
 export const deleteNote = async(req,res,next) => {
     const noteId = req.params.noteId

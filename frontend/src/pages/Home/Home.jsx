@@ -14,7 +14,7 @@ const Home = () => {
   const { currentUser, loading, errorDispatch } = useSelector(
     (state) => state?.user
   )
-
+console.log(" current :",currentUser)
   const [userInfo, setUserInfo] = useState(null)
   const [allNotes, setAllNotes] = useState([])
 
@@ -29,12 +29,12 @@ const Home = () => {
     type: "add",
     data: null,
   })
-
+  console.log(" current :",currentUser.user)
   useEffect(() => {
     if (currentUser === null || !currentUser) {
       navigate("/login")
     } else {
-      setUserInfo(currentUser?.rest)
+      setUserInfo(currentUser.user)
       getAllNotes()
     }
   }, [])

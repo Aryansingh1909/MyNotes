@@ -1,7 +1,8 @@
 import React from 'react'
-import { getInitials } from '../../utils/helper'
+import { getInitials } from '../../utils/helper.js'
 
 const ProfileInfo = ({onLogout,userInfo}) => {
+  console.log("first :  ",userInfo )
   return (
     <div className='flex items-center gap-3'>
         <div className='w-12 h-12 flex items-center justify-center rounded-full

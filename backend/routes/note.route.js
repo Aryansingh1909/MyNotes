@@ -24,9 +24,11 @@ const router = express.Router();
 
 router.post("/add", upload.single("file"), addNote );
 router.post("/edit/:noteId",verifyToken,editNote)
-router.get("/all",getAllNotes)
+// router.post("/edit/:noteId",editNote)
+router.get("/all",verifyToken,getAllNotes)
 router.delete("/delete/:noteId",verifyToken,deleteNote)
-router.put("/update-note-pinned/:noteId",verifyToken,updateNotePinned)
+// router.put("/update-note-pinned/:noteId",verifyToken,updateNotePinned)
+router.put("/update-note-pinned/:noteId",updateNotePinned)
 router.get("/search",verifyToken,searchNote)
 
 
